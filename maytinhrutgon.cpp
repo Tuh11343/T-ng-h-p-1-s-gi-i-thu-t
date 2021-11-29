@@ -127,9 +127,8 @@ double TinhToan(string dau,double a,double b)//hàm thực hiện tính toán
     return 0; 
 }
 
-double KetQua(queue<string>myqueue , stack<double>mystack2)
+void KetQua(queue<string>&myqueue , stack<double>&mystack2)
 {
-    double ketqua=0;
     while(!myqueue.empty())
     {
         string temp=myqueue.front();//lấy ra phần tử của queue và xóa nó sau đó
@@ -143,7 +142,6 @@ double KetQua(queue<string>myqueue , stack<double>mystack2)
             if(mystack2.size()<2)//khi stack chỉ còn 1 phần tử thì ko thể thực hiện tính toán
             {
                 cout<<"Bieu thuc ko hop le\n";
-                return 0;
             }
             else//trường hợp còn lại chúng ta sẽ tiến hành tạo ra 2 biến num để lưu trữ giá trị số và thực hiện tính toán bên trong stack
             {
@@ -151,12 +149,13 @@ double KetQua(queue<string>myqueue , stack<double>mystack2)
                 mystack2.pop();
                 double num2=mystack2.top();
                 mystack2.pop();
-                ketqua=TinhToan(temp,num2,num1);//luôn luôn phải lấy thằng 2 tính toán với thằng đầu nếu không biểu thức tính toán sẽ sai
+                double ketqua=TinhToan(temp,num2,num1);//luôn luôn phải lấy thằng 2 tính toán với thằng đầu nếu không biểu thức tính toán sẽ sai
                 mystack2.push(ketqua);//sau khi tính toán thì đẩy kết quả vừa tính được vào lại trong stack
             }
         }
     }
-    return ketqua;
+    cout<<mystack2.top()<<endl;
+              
 }
 
 void ChuanHoaChuoi(string &BieuThuc)//chuyển chuỗi về dạng ko còn khoảng trắng
@@ -292,17 +291,22 @@ int main()
 
     TinhToanBieuThuc:
     {
-        cout<<"\n\n";
         stack<string>mystack1;
         stack<double>mystack2;
         queue<string>myqueue;
         string BieuThuc;
-        fflush(stdin);
-        cout<<"Nhap vao bieu thuc:";
-        getline(cin,BieuThuc);
-        ChuanHoaChuoi(BieuThuc);
-        ChuyenBaLan(BieuThuc,mystack1,myqueue);
-        cout<<"Ket qua cua bieu thuc la:"<<KetQua(myqueue,mystack2)<<endl;
+        while(true)
+        {
+            cout<<"\n";
+            fflush(stdin);
+            cout<<"Nhap vao bieu thuc:";
+            getline(cin,BieuThuc);
+            if(BieuThuc=="q")
+                break;
+            ChuanHoaChuoi(BieuThuc);
+            ChuyenBaLan(BieuThuc,mystack1,myqueue);
+            KetQua(myqueue,mystack2);
+        }
         goto yesno;
     }
 
